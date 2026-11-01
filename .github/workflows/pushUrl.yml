@@ -27,13 +27,17 @@ jobs:
         uses: actions/checkout@v7
       # - name: 'Run baiduPush' # 步骤二，执行sh命令文件
       #   run: npm install && npm run baiduPush # 运行目录是仓库根目录
-      - name: Set up Python 3.8
+      # Python 3.8 已于 2024-10 结束生命周期（EOL），其最后一个预编译包 3.8.18
+      # 仅覆盖 ubuntu-20.04 / 22.04 / 24.04。ubuntu-latest 已升级到 26.04，
+      # 无法再安装 3.8，因此升级到仍在安全支持期内的 3.12（26.04 有 3.12.16）。
+      # 注意：版本号必须加引号，否则 YAML 会把 3.10 解析成浮点数 3.1。
+      - name: Set up Python 3.12
         uses: actions/setup-python@v7
         with:
-          python-version: 3.8
+          python-version: '3.12'
 
       - name: Install requests
-        run: pip install requests
+        run: python -m pip install --disable-pip-version-check requests
 
       - name: Push
         env:
